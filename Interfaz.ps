@@ -1,0 +1,121 @@
+# Cargar clases necesarias para crear la interfaz gráfica
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# Crear la ventana principal
+$window = New-Object System.Windows.Forms.Form
+$window.Text = "Error 403 - Acceso Denegado"
+$window.Size = New-Object System.Drawing.Size(800, 450)
+$window.StartPosition = "CenterScreen"
+$window.BackColor = "Black"
+$window.FormBorderStyle = [System.Windows.Forms.FormBorderStyle]::None
+$window.TopMost = $true
+
+# Fondo con efecto de gradiente personalizado
+$backgroundPanel = New-Object System.Windows.Forms.Panel
+$backgroundPanel.Dock = "Fill"
+$backgroundPanel.Paint.Add({
+    param ($sender, $e)
+    $brush = New-Object System.Drawing.Drawing2D.LinearGradientBrush(
+        $sender.ClientRectangle,
+        [System.Drawing.Color]::FromArgb(50, 50, 50),  # Gris oscuro
+        [System.Drawing.Color]::FromArgb(0, 0, 0),     # Negro
+        [System.Drawing.Drawing2D.LinearGradientMode]::Vertical
+    )
+    $e.Graphics.FillRectangle($brush, $sender.ClientRectangle)
+})
+
+$window.Controls.Add($backgroundPanel)
+
+# Agregar un encabezado grande y destacado
+$headerLabel = New-Object System.Windows.Forms.Label
+$headerLabel.Text = "⚠️ ERROR 403 ⚠️"
+$headerLabel.ForeColor = [System.Drawing.ColorTranslator]::FromHtml("#FF6347")  # Tomato
+$headerLabel.BackColor = [System.Drawing.Color]::Transparent
+$headerLabel.Font = New-Object System.Drawing.Font("Arial", 36, [System.Drawing.FontStyle]::Bold)
+$headerLabel.AutoSize = $true
+$headerLabel.Location = New-Object System.Drawing.Point(230, 40)
+
+# Subtítulo que advierte sobre acceso no autorizado
+$warningLabel = New-Object System.Windows.Forms.Label
+$warningLabel.Text = "ACCESO DENEGADO: Actividad no autorizada detectada"
+$warningLabel.ForeColor = "White"
+$warningLabel.BackColor = [System.Drawing.Color]::Transparent
+$warningLabel.Font = New-Object System.Drawing.Font("Arial", 20, [System.Drawing.FontStyle]::Italic)
+$warningLabel.AutoSize = $true
+$warningLabel.Location = New-Object System.Drawing.Point(60, 120)
+
+# Texto informativo sobre posibles acciones
+$infoLabel = New-Object System.Windows.Forms.Label
+$infoLabel.Text = "Este incidente será reportado al administrador del sistema."
+$infoLabel.ForeColor = [System.Drawing.ColorTranslator]::FromHtml("#FFD700")  # Gold
+$infoLabel.BackColor = [System.Drawing.Color]::Transparent
+$infoLabel.Font = New-Object System.Drawing.Font("Arial", 18, [System.Drawing.FontStyle]::Regular)
+$infoLabel.AutoSize = $true
+$infoLabel.Location = New-Object System.Drawing.Point(120, 180)
+
+# Texto adicional con detalle
+$detailLabel = New-Object System.Windows.Forms.Label
+$detailLabel.Text = "Si usted cree que esto es un error, por favor contacte a soporte técnico."
+$detailLabel.ForeColor = [System.Drawing.ColorTranslator]::FromHtml("#B0C4DE")  # LightSteelBlue
+$detailLabel.BackColor = [System.Drawing.Color]::Transparent
+$detailLabel.Font = New-Object System.Drawing.Font("Arial", 14, [System.Drawing.FontStyle]::Regular)
+$detailLabel.AutoSize = $true
+$detailLabel.Location = New-Object System.Drawing.Point(100, 230)
+
+# Botón de "Aceptar"
+$okButton = New-Object System.Windows.Forms.Button
+$okButton.Text = "Aceptar"
+$okButton.Font = New-Object System.Drawing.Font("Arial", 14, [System.Drawing.FontStyle]::Bold)
+$okButton.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#333333")  # Gris oscuro
+$okButton.ForeColor = "White"
+$okButton.Size = New-Object System.Drawing.Size(150, 50)
+$okButton.Location = New-Object System.Drawing.Point(100, 300)
+$okButton.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
+$okButton.FlatAppearance.BorderColor = "Tomato"
+$okButton.FlatAppearance.BorderSize = 2
+$okButton.Add_Click({
+    [System.Windows.Forms.MessageBox]::Show("Acción denegada", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+})
+
+# Botón de "Cancelar"
+$cancelButton = New-Object System.Windows.Forms.Button
+$cancelButton.Text = "Cancelar"
+$cancelButton.Font = New-Object System.Drawing.Font("Arial", 14, [System.Drawing.FontStyle]::Bold)
+$cancelButton.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#333333")  # Gris oscuro
+$cancelButton.ForeColor = "White"
+$cancelButton.Size = New-Object System.Drawing.Size(150, 50)
+$cancelButton.Location = New-Object System.Drawing.Point(300, 300)
+$cancelButton.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
+$cancelButton.FlatAppearance.BorderColor = "Tomato"
+$cancelButton.FlatAppearance.BorderSize = 2
+$cancelButton.Add_Click({
+    [System.Windows.Forms.MessageBox]::Show("Acción cancelada", "Información", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+})
+
+# Botón de "Contactar Soporte"
+$supportButton = New-Object System.Windows.Forms.Button
+$supportButton.Text = "Contactar Soporte"
+$supportButton.Font = New-Object System.Drawing.Font("Arial", 14, [System.Drawing.FontStyle]::Bold)
+$supportButton.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#333333")  # Gris oscuro
+$supportButton.ForeColor = "White"
+$supportButton.Size = New-Object System.Drawing.Size(220, 50)
+$supportButton.Location = New-Object System.Drawing.Point(500, 300)
+$supportButton.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
+$supportButton.FlatAppearance.BorderColor = "Tomato"
+$supportButton.FlatAppearance.BorderSize = 2
+$supportButton.Add_Click({
+    [System.Windows.Forms.MessageBox]::Show("Contactando al soporte técnico...", "Soporte", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+})
+
+# Añadir controles a la ventana
+$backgroundPanel.Controls.Add($headerLabel)
+$backgroundPanel.Controls.Add($warningLabel)
+$backgroundPanel.Controls.Add($infoLabel)
+$backgroundPanel.Controls.Add($detailLabel)
+$backgroundPanel.Controls.Add($okButton)
+$backgroundPanel.Controls.Add($cancelButton)
+$backgroundPanel.Controls.Add($supportButton)
+
+# Mostrar la ventana
+$window.ShowDialog()
